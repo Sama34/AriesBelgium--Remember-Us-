@@ -37,7 +37,7 @@ function rememberus_info()
 {
 	global $lang;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	$donate_button = 
 '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RQNL345SN45DS" style="float:right;margin-top:-8px;padding:4px;" target="_blank"><img src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_SM.gif" /></a>';
@@ -45,12 +45,12 @@ function rememberus_info()
 	return array(
 		"name"			=> $lang->rememberus_plugin_name,
 		"description"	=> $donate_button.$lang->rememberus_description,
-		"website"		=> "",
+		"website"		=> "http://mods.mybb.com/view/remember-us",
 		"author"		=> "Aries-Belgium",
 		"authorsite"	=> "mailto:aries.belgium@gmail.com",
 		"version"		=> "1.4",
-		"guid" 			=> "3816f5d3af65050d62d32eb2bc22775c",
-		"compatibility" => "14*,16*"
+		'codename'		=> 'ougc_rememberus',
+		"compatibility" => "18*"
 	);
 }
 
@@ -61,7 +61,7 @@ function rememberus_install()
 {
 	global $db, $lang;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 
 	// create the tables
 	$db->query(
@@ -232,11 +232,11 @@ function rememberus_deactivate()
  *
  * Add the submenu to the user tab
  */
-function rememberus_admin_user_menu($submenu)
+function rememberus_admin_user_menu(&$submenu)
 {
 	global $lang;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	$submenu[] = array(
 		'id' => 'rememberus',
@@ -250,7 +250,7 @@ function rememberus_admin_user_menu($submenu)
  *
  * Fix to set the menu to active
  */
-function rememberus_admin_user_action_handler($actions)
+function rememberus_admin_user_action_handler(&$actions)
 {
 	$actions['rememberus'] = array('active' => 'rememberus', 'file' => '');
 }
@@ -266,7 +266,7 @@ function rememberus_admin_load()
 	
 	if($mybb->input['module'] == "user"._MODULE_SEPARATOR."rememberus")
 	{
-		rememberus__lang_load("",false,true);
+		rememberus__lang_load();
 		
 		$sub_tabs = array(
 			"reminders" => array(
@@ -399,9 +399,9 @@ function rememberus_admin_load()
 				}
 				
 				$page->extra_header .= '
-				<link type="text/css" href="'.$mybb->settings['bburl'].'/inc/plugins/rememberus/style/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
+				<link type="text/css" href="'.$mybb->settings['bburl'].'/cache/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
 				<script type="text/javascript" src="../jscripts/scriptaculous.js?load=effects"></script>
-				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/inc/plugins/rememberus/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
+				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
 				<script type="text/javascript">
 					'.rememberus_inserttext().'
 				</script>';
@@ -497,7 +497,7 @@ function rememberus_admin_load()
 				echo '</div>';
 				
 				echo '<div id="reminder_conditions" style="'.$other_display.'">';
-				$form_container = new FormContainer($lang->rememberus_conditions.'<a href="#help" class="rememberus_btn_help" rel="reminder_conditions_help" >&nbsp;</a>');
+				$form_container = new FormContainer($lang->rememberus_conditions.'<a href="#help" class="rememberus_btn_help" rel="reminder_conditions_help" style="background-image: url(\'styles/'.$page->style.'/images/icons/maillogs_thread.png\');">&nbsp;</a>');
 				
 				$form_container->output_row_header($lang->rememberus_field);
 				$form_container->output_row_header($lang->rememberus_test);
@@ -524,7 +524,7 @@ function rememberus_admin_load()
 				);
 				
 				$form_container->output_cell(
-					'<a href="#" class="rememberus_btn_add" id="rememberus_btn_add">&nbsp;</a>',
+					'<a href="#" class="rememberus_btn_add" id="rememberus_btn_add" style="background-image: url(\'styles/'.$page->style.'/images/icons/increase.png\');">&nbsp;</a>',
 					array('style' => "text-align:center")
 				);
 				
@@ -627,9 +627,9 @@ function rememberus_admin_load()
 				}
 				
 				$page->extra_header .= '
-				<link type="text/css" href="'.$mybb->settings['bburl'].'/inc/plugins/rememberus/style/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
+				<link type="text/css" href="'.$mybb->settings['bburl'].'/cache/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
 				<script type="text/javascript" src="../jscripts/scriptaculous.js?load=effects"></script>
-				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/inc/plugins/rememberus/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
+				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
 				<script type="text/javascript">
 					'.rememberus_inserttext().'
 				</script>';
@@ -725,7 +725,7 @@ function rememberus_admin_load()
 				echo '</div>';
 				
 				echo '<div id="reminder_conditions" style="'.$other_display.'">';
-				$form_container = new FormContainer($lang->rememberus_conditions.'<a href="#help" class="rememberus_btn_help" rel="reminder_conditions_help" >&nbsp;</a>');
+				$form_container = new FormContainer($lang->rememberus_conditions.'<a href="#help" class="rememberus_btn_help" rel="reminder_conditions_help" style="background-image: url(\'styles/'.$page->style.'/images/icons/maillogs_thread.png\');">&nbsp;</a>');
 				
 				$form_container->output_row_header($lang->rememberus_field);
 				$form_container->output_row_header($lang->rememberus_test);
@@ -756,7 +756,7 @@ function rememberus_admin_load()
 						);
 						
 						$form_container->output_cell(
-							'<a href="#" class="rememberus_btn_delete">&nbsp;</a>',
+							'<a href="#" class="rememberus_btn_delete" style="background-image: url(\'styles/'.$page->style.'/images/icons/delete.png\');">&nbsp;</a>',
 							array('style' => "text-align:center")
 						);
 						
@@ -777,7 +777,7 @@ function rememberus_admin_load()
 				);
 				
 				$form_container->output_cell(
-					'<a href="#" class="rememberus_btn_add" id="rememberus_btn_add">&nbsp;</a>',
+					'<a href="#" class="rememberus_btn_add" id="rememberus_btn_add" style="background-image: url(\'styles/'.$page->style.'/images/icons/increase.png\');">&nbsp;</a>',
 					array('style' => "text-align:center")
 				);
 				
@@ -1118,12 +1118,12 @@ function rememberus_admin_load()
 				{
 					if($reminder['active'] == 1)
 					{
-						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.gif\" alt=\"({$lang->alt_enabled})\" title=\"{$lang->alt_enabled}\"  style=\"vertical-align: middle;\" /> ";
+						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.png\" alt=\"({$lang->alt_enabled})\" title=\"{$lang->alt_enabled}\"  style=\"vertical-align: middle;\" /> ";
 						$status = $lang->rememberus_deactivate_reminder;
 					}
 					else
 					{
-						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.gif\" alt=\"({$lang->alt_disabled})\" title=\"{$lang->alt_disabled}\"  style=\"vertical-align: middle;\" /> ";
+						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.png\" alt=\"({$lang->alt_disabled})\" title=\"{$lang->alt_disabled}\"  style=\"vertical-align: middle;\" /> ";
 						$status = $lang->rememberus_activate_reminder;
 					}
 					$reminder['rid'] = intval($reminder['rid']);
@@ -1191,7 +1191,7 @@ function rememberus_usercp_start()
  * 
  * Force the redirect page to show up
  */
-function rememberus_redirect($redirect_args)
+function rememberus_redirect(&$redirect_args)
 {
 	global $mybb, $lang;
 	
@@ -1236,7 +1236,7 @@ function rememberus_fields()
 {
 	global $db, $lang, $plugins;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	$fields = array(
 		'uid' => array(
@@ -1322,7 +1322,7 @@ function rememberus_interval_select()
 {
 	global $lang;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	return array(
 		'once' => $lang->rememberus_interval_once,
@@ -1344,7 +1344,7 @@ function rememberus_test_select()
 {
 	global $lang;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	return array(
 		'' => '',
@@ -1372,7 +1372,7 @@ function rememberus_placeholders($target_id)
 {
 	global $lang, $plugins;
 	
-	rememberus__lang_load("",false,true);
+	rememberus__lang_load();
 	
 	$placeholders = array(
 		'username' => $lang->rememberus_ph_username,
@@ -1734,54 +1734,12 @@ function rememberus_unsubscribe_link($user)
 /**
  * Helper function to load language files for the plugin
  */
-function rememberus__lang_load($file="", $supress_error=false, $force_admin=false)
+function rememberus__lang_load()
 {
 	global $lang;
-	
-	$plugin_name = str_replace('__lang_load', '', __FUNCTION__);
-	$plugin_lang_dir = MYBB_ROOT."inc/plugins/{$plugin_name}/lang/";
-	if(empty($file)) $file = $plugin_name;
-	
-	$langparts = explode("/", $lang->language, 2);
-	$language = $langparts[0];
-	if(isset($langparts[1]))
+
+	if(!isset($lang->rememberus_unsubscribe_disclaimer) && !isset($lang->rememberus_unsubscribe_success))
 	{
-		$dir = "/".$langparts[1];
-	}
-	else
-	{
-		$dir = "";
-	}
-	
-	if($force_admin)
-	{
-		$dir = "/admin";
-	}
-	
-	if(file_exists($plugin_lang_dir.$language.$dir."/{$file}.lang.php"))
-	{
-		require_once $plugin_lang_dir.$language.$dir."/{$file}.lang.php";
-	}
-	elseif(file_exists($plugin_lang_dir."english".$dir."/{$file}.lang.php"))
-	{
-		require_once $plugin_lang_dir."english".$dir."/{$file}.lang.php";
-	}
-	else
-	{
-		if($supress_error != true)
-		{
-			die($plugin_lang_dir."english".$dir."/{$file}.lang.php");
-		}
-	}
-	
-	if(is_array($l))
-	{
-		foreach($l as $key => $val)
-		{
-			if(empty($lang->$key) || $lang->$key != $val)
-			{
-				$lang->$key = $val;
-			}
-		}
+		$lang->load('rememberus');
 	}
 }

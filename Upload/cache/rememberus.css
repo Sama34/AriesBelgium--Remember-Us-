@@ -16,17 +16,6 @@ a.rememberus_btn_add
 	
 }
 
-a.rememberus_btn_delete
-{
-	background: transparent url(../images/icons/delete.png);
-}
-
-a.rememberus_btn_help
-{
-	background: transparent url(../images/icons/help.png);
-	float: right;
-}
-
 .rememberus_field, .rememberus_test
 {
 	width: 300px;
