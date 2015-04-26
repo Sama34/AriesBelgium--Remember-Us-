@@ -1,0 +1,33 @@
+a.rememberus_btn_add, a.rememberus_btn_delete , a.rememberus_btn_help
+{
+	display: block;
+	height: 16px;
+	width: 16px;
+	text-indent: -999px;
+	text-decoration: none;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+}
+
+a.rememberus_btn_add
+{
+	background: transparent url(../images/icons/add.png);
+	
+}
+
+a.rememberus_btn_delete
+{
+	background: transparent url(../images/icons/delete.png);
+}
+
+a.rememberus_btn_help
+{
+	background: transparent url(../images/icons/help.png);
+	float: right;
+}
+
+.rememberus_field, .rememberus_test
+{
+	width: 300px;
+}

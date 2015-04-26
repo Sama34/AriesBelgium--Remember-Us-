@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<title>Remember Us: Conditions</title>
+
+</head>
+
+<body>
+	<div>
+		<h1>Conditions</h1>
+		With conditions you can filter the users you want to target. The available fields include: user id, username, group id, number of posts, registration date, last active, ..., and even custom profile fields. You can add as many conditions as you wish by clicking the add button in the last row of the conditions table. You can also remove any unwanted condition by clicking the remove button on each condition row.<br/><br/>
+		Each condition has three parts:<br/><br/>
+		<b>Field</b>: the name of the field that holds the information you want to check. Every field has a specific type that can change the context of the test operator and the value.
+		<ul>
+			<li>User ID: number</li>
+			<li>Username: text</li>
+			<li>E-mail: text</li>
+			<li>Number of posts: number</li>
+			<li>Usergroup (ID): number</li>
+			<li>Registration date: date</li>
+			<li>Last active: date</li>
+			<li>Away status: boolean (true/false)</li>
+			<li>Return date: date</li>
+			<li>Reputation: number</li>
+			<li>Registraton IP: ip address</li>
+			<li>Last used IP: ip address</li>
+			<li>Time spend online: number (of seconds)</li>
+			<li>Language: text</li>
+			<li>Custom fields are all treated like text</li>
+		</ul><br/>
+		<b>Test</b>: the operator you want to use to test a chosen field for the given value. Tests have a different purpose for the different field types.
+		<ul>
+		<li>number<ul>
+			<li>equal / not equal: test if field has the same numeric value as the given value.</li>
+			<li>is null / is not null: test if the field has the value of NULL or not.</li>
+			<li>is empty / is not empty: test if the field is empty or not (= no value).</li>
+			<li>lower than / greater than: test if the value of the field is lower or greater than the given value.</li>
+			<li>in / not in: test if the value of the field is included or not included in the give list of values (comma separated).</li>
+			<li>like / not like: no significant purpose for a number.</li>
+		</ul></li>
+		<li>text<ul>
+			<li>equal / not equal: test if field has the same value as the given value.</li>
+			<li>is null / is not null: test if the field has the value of NULL or not.</li>
+			<li>is empty / is not empty: test if the field is empty or not (= no value).</li>
+			<li>lower than / greater than: test if the value of the field is lower or higher in the alphabet than the given value.</li>
+			<li>in / not in: test if the value of the field is included in the give list of values (comma separated). If you would like to include a comma in your value you need enclose the value in quotes.</li>
+			<li>like / not like: test if field value matches the given pattern. You can use the asterisk sign (*) for a wildcart. For example: abc*e</li>
+		</ul></li>
+		<li>date<ul>
+			<li>equal / not equal: not really helpfull for dates. Use lower than / greater than instead.</li>
+			<li>is null / is not null: test if the field has the value of NULL or not.</li>
+			<li>is empty / is not empty: test if the field is empty or not (= no value).</li>
+			<li>lower than / greater than: test if field is before or after the given date value.</li>
+			<li>in / not in: no significant purpose for a date.</li>
+			<li>like / not like: no significant purpose for a date.</li>
+		</ul></li>
+		<li>boolean<ul>
+			<li>equal / not equal: test if field has or hasn't the same value as the given value.</li>
+			<li>is null / is not null: test if the field has the value of NULL or not.</li>
+			<li>is empty / is not empty: test if the field is empty or not (= no value).</li>
+			<li>lower than / greater than: no significant purpose for a boolean.</li>
+			<li>in / not in: no significant purpose for a boolean.</li>
+			<li>like / not like: no significant purpose for a boolean.</li>
+		</ul></li>
+		<li>ip address<ul>
+			<li>equal / not equal: test if field has or hasn't got the same ip as the given ip.</li>
+			<li>is null / is not null: test if the field has the value of NULL or not.</li>
+			<li>is empty / is not empty: test if the field is empty or not (= no value).</li>
+			<li>lower than / greater than: test if the ip stored in the field is lower or greater than the given ip.</li>
+			<li>in / not in: test if the ip stored in the field is in the given list of ip addresses (comma separated).</li>
+			<li>like / not like: test if the ip stored in the field matches the given pattern. You can use the asterisk sign (*) for a wildcart.</li>
+		</ul></li>
+		</ul><br/>
+		<b>Value</b>: the value you want to test for. Some field types can have different types of values.
+		<ul>
+			<li>number: <ul>
+				<li>equal / not equal: a numeric value (for example: 1 or 2 or 999)</li>
+				<li>is null / is not null: no value</li>
+				<li>is empty / is not empty: no value</li>
+				<li>lower than / greater than: a numeric value (for example: 1 or 2 or 999)</li>
+				<li>in / not in: a list of numeric values (for example: 1,2,3,999).</li>
+				<li>like / not like: not applicable</li>
+			</ul></li>
+			<li>text: <ul>
+				<li>equal / not equal: a string value (for example: abcd or efgh)</li>
+				<li>is null / is not null: no value</li>
+				<li>is empty / is not empty: no value</li>
+				<li>lower than / greater than: a string value (for example: abcd or efgh)</li>
+				<li>in / not in: a list of string values (for example: abcd,efgh,\"abcd,efgh\").</li>
+				<li>like / not like: a pattern (for example: abc*fgh)</li>
+			</ul></li>
+			<li>date: <ul>
+				<li>A date can have two types of format:<ul>
+					<li>absolute date: a date formatted as dd-mm-YYYY or mm/dd/YYYY. Not really helpfull because the reminder will only work for one specific date.</li>
+					<li>relative date: a textual representation in English of a relative date. For example: -1 week (= one week ago), +2 week (= 2 weeks from now), today (= today). Please read the <a href=\"http://php.net/manual/en/function.strtotime.php\">strtotime()</a> documentation for more information about supported formats.</li>
+				</ul></li>
+				<li>equal / not equal: a date value (for example: 02-12-2011)</li>
+				<li>is null / is not null: no value</li>
+				<li>is empty / is not empty: no value</li>
+				<li>lower than / greater than: a date value (for example: +1 month)</li>
+				<li>in / not in: a list of dates (for example: 02-12-2011,04-12-2011).</li>
+				<li>like / not like: not applicable</li>
+			</ul></li>
+			<li>boolean: <ul>
+				<li>equal / not equal: 0 or 1</li>
+				<li>lower than / greater than: not applicable.</li>
+				<li>is null / is not null: no value</li>
+				<li>is empty / is not empty: no value</li>
+				<li>in / not in: a list of dates not applicable.</li>
+				<li>like / not like: not applicable</li>
+			</ul></li>
+			<li>ip address: <ul>
+				<li>equal / not equal: an ip address (for example: 111.111.111.111)</li>
+				<li>is null / is not null: no value</li>
+				<li>is empty / is not empty: no value</li>
+				<li>lower than / greater than:  an ip address (for example: 111.111.111.111)</li>
+				<li>in / not in: a list of ip addresses (for example: 111.111.111,222.222.222.222).</li>
+				<li>like / not like: a pattern (for example: 111.111.*)</li>
+			</ul></li>
+		</ul>
+	</div>
+</body>
+</html>

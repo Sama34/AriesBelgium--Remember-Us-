@@ -1,0 +1,28 @@
+INSTALL
+=======
+1) Copy the inc/ folder from the zip file to your MyBB root directory
+2) Install & Activate the plugin in the AdminCP
+3) Go to AdminCP > Users & Groups > Reminders to start setting up reminders
+
+UPGRADE
+======
+1) Deactivate the plugin
+2) Upload the new files to the server
+3) (Install &) Activate the plugin again
+
+UNINSTALL
+=========
+1) Uninstall the plugin in the AdminCP (this will remove all data and can not be reverted)
+2) Remove the following files from your MyBB installation:
+./inc/plugins/rememberus (folder)
+./inc/plugins/rememberus.php
+./inc/tasks/rememberus.php
+
+TRANSLATION
+===========
+Translations can be found in the ./inc/plugins/rememberus/lang/ folder. Copy the english/ directory
+and rename the new folder to the name of the language. Make sure this is called the same as the 
+language pack in MyBB is called. Translate all the .lang.php files in your lang directory.
+If you like to share your translation, zip the folder of your translation, provide a small text file
+that tells the user how to install it and upload the zip file to mods.mybb.com as a language pack for
+this plugin. Thank you :)
