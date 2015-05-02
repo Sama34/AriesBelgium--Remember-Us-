@@ -426,7 +426,7 @@ function rememberus_admin_load()
 				$form_container->output_row(
 					$lang->rememberus_priority,
 					$lang->rememberus_priority_description,
-					$form->generate_text_box('priority', $priority, array('id' => 'priority')),
+					$form->generate_numeric_field('priority', $priority, array('id' => 'priority')),
 					'priority'
 				);
 				
@@ -654,7 +654,7 @@ function rememberus_admin_load()
 				$form_container->output_row(
 					$lang->rememberus_priority,
 					$lang->rememberus_priority_description,
-					$form->generate_text_box('priority', floatval($priority), array('id' => 'priority')),
+					$form->generate_numeric_field('priority', floatval($priority), array('id' => 'priority')),
 					'priority'
 				);
 				
@@ -1113,31 +1113,39 @@ function rememberus_admin_load()
 				$form_container->output_row_header($lang->controls, array("class" => "align_center","style" => "width: 10%"));
 				
 				// iterate through the reminders
-				$query = $db->query("SELECT * FROM ".TABLE_PREFIX."rememberus ORDER BY priority DESC");
-				while($reminder = $db->fetch_array($query))
+				$query = $db->simple_select('rememberus', '*', '', array('order_by' => 'priority', 'order_dir' => 'desc'));
+				if($db->num_rows($query))
 				{
-					if($reminder['active'] == 1)
+					while($reminder = $db->fetch_array($query))
 					{
-						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.png\" alt=\"({$lang->alt_enabled})\" title=\"{$lang->alt_enabled}\"  style=\"vertical-align: middle;\" /> ";
-						$status = $lang->rememberus_deactivate_reminder;
+						if($reminder['active'] == 1)
+						{
+							$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_on.png\" alt=\"({$lang->alt_enabled})\" title=\"{$lang->alt_enabled}\"  style=\"vertical-align: middle;\" /> ";
+							$status = $lang->rememberus_deactivate_reminder;
+						}
+						else
+						{
+							$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.png\" alt=\"({$lang->alt_disabled})\" title=\"{$lang->alt_disabled}\"  style=\"vertical-align: middle;\" /> ";
+							$status = $lang->rememberus_activate_reminder;
+						}
+						$reminder['rid'] = intval($reminder['rid']);
+						$popup = new PopupMenu("reminder_group_{$reminder['rid']}", $lang->options);
+						$popup->add_item($lang->edit, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=edit&amp;rid={$reminder['rid']}");
+						$popup->add_item($lang->delete, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=delete&amp;rid={$reminder['rid']}");
+						$popup->add_item($status, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=status&amp;rid={$reminder['rid']}");
+						$popup->add_item($lang->rememberus_view_log, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=log&amp;rid={$reminder['rid']}");
+						$popup->add_item($lang->rememberus_testmail_reminder, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=testmail&amp;rid={$reminder['rid']}");
+						
+						$form_container->output_cell($icon.'<strong>'.htmlspecialchars_uni($reminder['name']).'</strong>');
+						$form_container->output_cell($form->generate_text_box("priority[".$reminder['rid']."]", $reminder['priority'], array('style' =>"width:30px;text-align:center")), array('style' => "text-align:center"));
+						$form_container->output_cell($popup->fetch(), array('class'=>"align_center"));
+						$form_container->construct_row();
 					}
-					else
-					{
-						$icon = "<img src=\"styles/{$page->style}/images/icons/bullet_off.png\" alt=\"({$lang->alt_disabled})\" title=\"{$lang->alt_disabled}\"  style=\"vertical-align: middle;\" /> ";
-						$status = $lang->rememberus_activate_reminder;
-					}
-					$reminder['rid'] = intval($reminder['rid']);
-					$popup = new PopupMenu("reminder_group_{$reminder['rid']}", $lang->options);
-					$popup->add_item($lang->edit, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=edit&amp;rid={$reminder['rid']}");
-					$popup->add_item($lang->delete, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=delete&amp;rid={$reminder['rid']}");
-					$popup->add_item($status, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=status&amp;rid={$reminder['rid']}");
-					$popup->add_item($lang->rememberus_view_log, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=log&amp;rid={$reminder['rid']}");
-					$popup->add_item($lang->rememberus_testmail_reminder, "index.php?module=user"._MODULE_SEPARATOR."rememberus&amp;action=testmail&amp;rid={$reminder['rid']}");
-					
-					$form_container->output_cell($icon.'<strong>'.htmlspecialchars_uni($reminder['name']).'</strong>');
-					$form_container->output_cell($form->generate_text_box("priority[".$reminder['rid']."]", $reminder['priority'], array('style' =>"width:30px;text-align:center")), array('style' => "text-align:center"));
-					$form_container->output_cell($popup->fetch(), array('class'=>"align_center"));
-					$form_container->construct_row();
+				}
+				else
+				{
+						$form_container->output_cell($lang->rememberus_empty, array('colspan' => '3', 'class' => 'align_center'));
+						$form_container->construct_row();
 				}
 				
 				$form_container->end();
@@ -1385,15 +1393,32 @@ function rememberus_placeholders($target_id)
 		'bbemail' => $lang->rememberus_ph_bbemail,
 		'unsubscribe_link' => $lang->rememberus_ph_unsubscribe_link,
 	);
-	
+
+	$jQ = "<script>
+	$(document).ready(function() {";
+
 	$placeholders_links = array();
 	foreach($placeholders as $placeholder => $translation)
 	{
-		$placeholders_links[] = "[<a href=\"#\" onclick=\"insertText('{".$placeholder."}', $('".$target_id."')); return false;\">".$translation."</a>]";
+		$jQ .= "
+			$('#".$target_id."_".$placeholder."').on('click', function () {
+				$(\"#".$target_id."\").val($(\"#".$target_id."\").val()+\"{".$placeholder."}\"); 
+			});";
+		$placeholders_links[] = "[<a href=\"javascript:void(0);\" id=\"".$target_id."_".$placeholder."\">".$translation."</a>]";
 	}
-	
-	$plugins->run_hooks('rememberus_placeholders_links', $placeholders_links);
-	
+
+	$args = array(
+		'jQ'					=> $jQ,
+		'placeholders_links'	=> $placeholders_links,
+	);
+
+	$plugins->run_hooks('rememberus_placeholders_links', $args);
+
+	$jQ .= "	});
+</script>";
+
+	echo $jQ;
+
 	return implode(", ", $placeholders_links);
 }
 
