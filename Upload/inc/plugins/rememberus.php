@@ -400,7 +400,6 @@ function rememberus_admin_load()
 				
 				$page->extra_header .= '
 				<link type="text/css" href="'.$mybb->settings['bburl'].'/cache/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
-				<script type="text/javascript" src="../jscripts/scriptaculous.js?load=effects"></script>
 				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
 				<script type="text/javascript">
 					'.rememberus_inserttext().'
@@ -628,7 +627,6 @@ function rememberus_admin_load()
 				
 				$page->extra_header .= '
 				<link type="text/css" href="'.$mybb->settings['bburl'].'/cache/rememberus.css?v='.REMEMBERUS_PLUGIN_VERSION.'" rel="stylesheet" />
-				<script type="text/javascript" src="../jscripts/scriptaculous.js?load=effects"></script>
 				<script type="text/javascript" src="'.$mybb->settings['bburl'].'/jscripts/rememberus.js?v='.REMEMBERUS_PLUGIN_VERSION.'"></script>
 				<script type="text/javascript">
 					'.rememberus_inserttext().'

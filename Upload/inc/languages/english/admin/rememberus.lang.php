@@ -33,6 +33,7 @@ $l['rememberus_testmail_reminder_description'] = "You can send an example of how
 $l['rememberus_update'] = "Mass update priority";
 $l['rememberus_activate_reminder'] = "Activate";
 $l['rememberus_deactivate_reminder'] = "Deactivate";
+$l['rememberus_empty'] = 'There are currently no reminders to display.';
 
 $l['rememberus_name'] = "Name";
 $l['rememberus_name_description'] = "This name will only be visible in the AdminCP.";
